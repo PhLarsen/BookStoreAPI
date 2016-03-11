@@ -13,17 +13,17 @@ namespace BooksAPI.Core
 
         protected override void Seed(BooksContext context)
         {
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 1, Rating = 4});
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 2, Rating = 4});
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 3, Rating = 3});
+            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 1, Rating = 4, Description = "Enjoyed book a lot!"});
+            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 2, Rating = 4, Description = "Great book, bit short."});
+            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 3, Rating = 3, Description = "Good book, wouldn't read twice."});
 
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 4, Rating = 5});
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 5, Rating = 5});
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 6, Rating = 5});
+            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 4, Rating = 5, Description = "Stunning!"});
+            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 5, Rating = 5, Description = "Best book ever?"});
+            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 6, Rating = 5, Description = "My favourite book of all time."});
 
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 7, Rating = 4});
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 8, Rating = 4});
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 9, Rating = 5});
+            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 7, Rating = 4, Description = "Fun read."});
+            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 8, Rating = 4, Description = "Good casual read."});
+            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 9, Rating = 5, Description = "Good but not a serious self help book."});
 
             context.Books.AddOrUpdate(new Book
             {
