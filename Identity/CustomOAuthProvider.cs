@@ -1,24 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using BooksAPI.Core;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OAuth;
-
-namespace BooksAPI.Identity
+﻿namespace BooksAPI.Identity
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Security.Principal;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+    using Core;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.OAuth;
+
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] {"*"});
 
             IdentityUser user;
             if (!AuthenticateUser(context, out user))
@@ -62,7 +62,7 @@ namespace BooksAPI.Identity
             var identity = new ClaimsIdentity("JWT");
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim("sub", context.UserName));
-            
+
             var userRoles = context.OwinContext.Get<UserManager<IdentityUser>>().GetRoles(user.Id);
             foreach (var role in userRoles)
             {
@@ -82,7 +82,7 @@ namespace BooksAPI.Identity
                 context.SetError("invalid_grant", "The user name or password is incorrect");
                 return false;
             }
-            user = context.OwinContext.Get<BooksContext>().Users.FirstOrDefault(u => u.UserName == context.UserName); 
+            user = context.OwinContext.Get<BooksContext>().Users.FirstOrDefault(u => u.UserName == context.UserName);
 
             if (!context.OwinContext.Get<UserManager<IdentityUser>>().CheckPassword(user, context.Password))
             {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Configuration;
-using System.IdentityModel.Tokens;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler.Encoder;
-using Thinktecture.IdentityModel.Tokens;
-
-namespace BooksAPI.Identity
+﻿namespace BooksAPI.Identity
 {
+    using System;
+    using System.Configuration;
+    using System.IdentityModel.Tokens;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.DataHandler.Encoder;
+    using Thinktecture.IdentityModel.Tokens;
+
     public class CustomJwtFormat : ISecureDataFormat<AuthenticationTicket>
     {
         private const string AUDIENCE_PROPERTY_KEY = "audience";

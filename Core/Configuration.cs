@@ -1,8 +1,8 @@
-﻿using System.Data.Entity.Migrations;
-using BooksAPI.Models;
-
-namespace BooksAPI.Core
+﻿namespace BooksAPI.Core
 {
+    using System.Data.Entity.Migrations;
+    using Models;
+
     public class Configuration : DbMigrationsConfiguration<BooksContext>
     {
         public Configuration()
@@ -28,7 +28,7 @@ namespace BooksAPI.Core
             context.Books.AddOrUpdate(new Book
             {
                 Id = 1,
-                Title = "The Millionnaire Fastlane",
+                Title = "Millionnaire Fastlane",
                 Description = "Is the financial plan of mediocrity -- a dream-stealing, soul-sucking dogma known as \"The Slowlane\" your plan for creating wealth? You know how it goes; it sounds a little something like this: \"Go to school, get a good job, save 10 % of your paycheck, buy a used car, cancel the movie channels, quit drinking expensive Starbucks lattes, save and penny - pinch your life away, trust your life - savings to the stock market, and one day, when you are oh, say, 65 years old, you can retire rich.\"",
                 Price = 14.51m,
                 ImageUrl = "http://ecx.images-amazon.com/images/I/514kBeGrXDL._SX331_BO1,204,203,200_.jpg"
@@ -46,7 +46,7 @@ namespace BooksAPI.Core
             context.Books.AddOrUpdate(new Book
             {
                 Id = 3,
-                Title = "The Richest Man in Babylon",
+                Title = "Richest Man in Babylon",
                 Description = "This timeless book holds that the key to success lies in the secrets of the ancients. Based on the famous \"Babylonian principles,\" it's been hailed as the greatest of all inspirational works on the subject of thrift and financial planning.",
                 Price = 0.99m,
                 ImageUrl = "http://ecx.images-amazon.com/images/I/41JGlyCt5NL._SX326_BO1,204,203,200_.jpg"

@@ -1,12 +1,12 @@
-﻿using System.Data.Entity;
-using System.Threading.Tasks;
-using System.Web.Http;
-using BooksAPI.Core;
-using BooksAPI.Models;
-using BooksAPI.ViewModels;
-
-namespace BooksAPI.Controllers
+﻿namespace BooksAPI.Controllers
 {
+    using System.Data.Entity;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using Core;
+    using Models;
+    using ViewModels;
+
     public class ReviewsController : ApiController
     {
         [HttpPost]

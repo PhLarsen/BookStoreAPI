@@ -1,10 +1,12 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using BooksAPI;
+using Microsoft.Owin;
 
-[assembly: OwinStartup(typeof (BooksAPI.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
 namespace BooksAPI
 {
+    using Owin;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)

@@ -1,18 +1,18 @@
-﻿using System;
-using System.Configuration;
-using BooksAPI.Core;
-using BooksAPI.Identity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler.Encoder;
-using Microsoft.Owin.Security.Jwt;
-using Microsoft.Owin.Security.OAuth;
-using Owin;
-
-namespace BooksAPI
+﻿namespace BooksAPI
 {
+    using System;
+    using System.Configuration;
+    using Core;
+    using Identity;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.DataHandler.Encoder;
+    using Microsoft.Owin.Security.Jwt;
+    using Microsoft.Owin.Security.OAuth;
+    using Owin;
+
     public partial class Startup
     {
         public void ConfigureOAuth(IAppBuilder app)
@@ -33,7 +33,7 @@ namespace BooksAPI
                     new SymmetricKeyIssuerSecurityTokenProvider(issuer, secret)
                 }
             });
-            
+
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
