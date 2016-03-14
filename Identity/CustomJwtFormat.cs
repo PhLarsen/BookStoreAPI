@@ -10,11 +10,11 @@
     public class CustomJwtFormat : ISecureDataFormat<AuthenticationTicket>
     {
         private const string AUDIENCE_PROPERTY_KEY = "audience";
-        private static readonly string _secret = ConfigurationManager.AppSettings["secret"];
+        private static readonly byte[] _secret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["secret"]);
         private static readonly string _audience = ConfigurationManager.AppSettings["audience"];
 
         private readonly string _issuer;
-
+        
         public CustomJwtFormat(string issuer)
         {
             _issuer = issuer;
@@ -33,9 +33,8 @@
             {
                 throw new InvalidOperationException("AuthenticationTicket.Properties does not include audience");
             }
-
-            var keyByteArray = TextEncodings.Base64Url.Decode(_secret);
-            var signingKey = new HmacSigningCredentials(keyByteArray);
+            
+            var signingKey = new HmacSigningCredentials(_secret);
             var issued = data.Properties.IssuedUtc;
             var expires = data.Properties.ExpiresUtc;
 

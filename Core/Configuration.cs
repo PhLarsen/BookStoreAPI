@@ -1,4 +1,8 @@
-﻿namespace BooksAPI.Core
+﻿using System.Linq;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
+namespace BooksAPI.Core
 {
     using System.Data.Entity.Migrations;
     using Models;
@@ -13,17 +17,30 @@
 
         protected override void Seed(BooksContext context)
         {
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 1, Rating = 4, Description = "Enjoyed book a lot!"});
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 2, Rating = 4, Description = "Great book, bit short."});
-            context.Reviews.AddOrUpdate(new Review {BookId = 1, Id = 3, Rating = 3, Description = "Good book, wouldn't read twice."});
+            context.Reviews.AddOrUpdate(new Review { BookId = 1, Id = 1, Rating = 4, Description = "Enjoyed book a lot!" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 1, Id = 2, Rating = 4, Description = "Great book, bit short." });
+            context.Reviews.AddOrUpdate(new Review { BookId = 1, Id = 3, Rating = 3, Description = "Good book, wouldn't read twice." });
 
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 4, Rating = 5, Description = "Stunning!"});
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 5, Rating = 5, Description = "Best book ever?"});
-            context.Reviews.AddOrUpdate(new Review {BookId = 2, Id = 6, Rating = 5, Description = "My favourite book of all time."});
+            context.Reviews.AddOrUpdate(new Review { BookId = 2, Id = 4, Rating = 5, Description = "Stunning!" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 2, Id = 5, Rating = 5, Description = "Best book ever?" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 2, Id = 6, Rating = 5, Description = "My favourite book of all time." });
 
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 7, Rating = 4, Description = "Fun read."});
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 8, Rating = 4, Description = "Good casual read."});
-            context.Reviews.AddOrUpdate(new Review {BookId = 3, Id = 9, Rating = 5, Description = "Good but not a serious self help book."});
+            context.Reviews.AddOrUpdate(new Review { BookId = 3, Id = 7, Rating = 4, Description = "Fun read." });
+            context.Reviews.AddOrUpdate(new Review { BookId = 3, Id = 8, Rating = 4, Description = "Good casual read." });
+            context.Reviews.AddOrUpdate(new Review { BookId = 3, Id = 9, Rating = 5, Description = "Good but not a serious self help book." });
+
+            context.Reviews.AddOrUpdate(new Review { BookId = 4, Id = 10, Rating = 3, Description = "Great for newbies" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 4, Id = 11, Rating = 4, Description = "Good, some points are common sense though" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 4, Id = 12, Rating = 3, Description = "Not great for experienced investors" });
+
+            context.Reviews.AddOrUpdate(new Review { BookId = 5, Id = 13, Rating = 3, Description = "1st half of the book awesome, 2nd half..terrible" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 5, Id = 14, Rating = 4, Description = "Found the book a bit monotonous after a while" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 5, Id = 15, Rating = 5, Description = "Enjoyed would fully recommend! Don't have to be a maths whizz to appreciate this" });
+
+            context.Reviews.AddOrUpdate(new Review { BookId = 6, Id = 16, Rating = 5, Description = "Much better than the film" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 6, Id = 17, Rating = 4, Description = "Educational" });
+            context.Reviews.AddOrUpdate(new Review { BookId = 6, Id = 18, Rating = 3, Description = "Very long" });
+
 
             context.Books.AddOrUpdate(new Book
             {
@@ -78,6 +95,38 @@
                 Price = 6.99m,
                 ImageUrl = "http://ecx.images-amazon.com/images/I/41pmjXYdOHL._SX309_BO1,204,203,200_.jpg"
             });
+
+            string adminRoleId;
+            string userRoleId;
+            if (!context.Roles.Any())
+            {
+                adminRoleId = context.Roles.Add(new IdentityRole("Administrator")).Id;
+                userRoleId = context.Roles.Add(new IdentityRole("User")).Id;
+            }
+            else
+            {
+                adminRoleId = context.Roles.First(c => c.Name == "Administrator").Id;
+                userRoleId = context.Roles.First(c => c.Name == "User").Id;
+            }
+
+            context.SaveChanges();
+
+            if (!context.Users.Any())
+            {
+                var administrator = context.Users.Add(new IdentityUser("administrator") { Email = "admin@somesite.com", EmailConfirmed = true });
+                administrator.Roles.Add(new IdentityUserRole { RoleId = adminRoleId });
+
+                var standardUser = context.Users.Add(new IdentityUser("jonpreece") { Email = "jon@somesite.com", EmailConfirmed = true });
+                standardUser.Roles.Add(new IdentityUserRole { RoleId = userRoleId });
+
+                context.SaveChanges();
+                
+                var store = new BookUserStore();
+                store.SetPasswordHashAsync(administrator, new BookUserManager().PasswordHasher.HashPassword("administrator123"));
+                store.SetPasswordHashAsync(standardUser, new BookUserManager().PasswordHasher.HashPassword("user123"));
+            }
+
+            context.SaveChanges();
         }
     }
 }
