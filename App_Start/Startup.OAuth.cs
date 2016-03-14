@@ -16,7 +16,6 @@ namespace BooksAPI
         public void ConfigureOAuth(IAppBuilder app)
         {
             var issuer = ConfigurationManager.AppSettings["issuer"];
-            var audience = ConfigurationManager.AppSettings["audience"];
             var secret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["secret"]);
 
             app.CreatePerOwinContext(() => new BooksContext());
@@ -25,7 +24,7 @@ namespace BooksAPI
             app.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
             {
                 AuthenticationMode = AuthenticationMode.Active,
-                AllowedAudiences = new[] {audience},
+                AllowedAudiences = new string[1],
                 IssuerSecurityTokenProviders = new IIssuerSecurityTokenProvider[]
                 {
                     new SymmetricKeyIssuerSecurityTokenProvider(issuer, secret)

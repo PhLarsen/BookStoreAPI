@@ -9,10 +9,7 @@
 
     public class CustomJwtFormat : ISecureDataFormat<AuthenticationTicket>
     {
-        private const string AUDIENCE_PROPERTY_KEY = "audience";
         private static readonly byte[] _secret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["secret"]);
-        private static readonly string _audience = ConfigurationManager.AppSettings["audience"];
-
         private readonly string _issuer;
         
         public CustomJwtFormat(string issuer)
@@ -26,19 +23,12 @@
             {
                 throw new ArgumentNullException(nameof(data));
             }
-
-            var audienceId = data.Properties.Dictionary.ContainsKey(AUDIENCE_PROPERTY_KEY) ? data.Properties.Dictionary[AUDIENCE_PROPERTY_KEY] : null;
-
-            if (string.IsNullOrWhiteSpace(audienceId))
-            {
-                throw new InvalidOperationException("AuthenticationTicket.Properties does not include audience");
-            }
             
             var signingKey = new HmacSigningCredentials(_secret);
             var issued = data.Properties.IssuedUtc;
             var expires = data.Properties.ExpiresUtc;
 
-            return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(_issuer, _audience, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingKey));
+            return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(_issuer, null, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingKey));
         }
 
         public AuthenticationTicket Unprotect(string protectedText)
