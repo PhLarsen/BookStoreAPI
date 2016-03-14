@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
@@ -19,15 +17,16 @@ namespace BooksAPI.Identity
     {
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] {"*"});
 
-            IdentityUser user;
-            if (!AuthenticateUser(context, out user))
+            var user = context.OwinContext.Get<BooksContext>().Users.FirstOrDefault(u => u.UserName == context.UserName);
+            if (!context.OwinContext.Get<BookUserManager>().CheckPassword(user, context.Password))
             {
+                context.SetError("invalid_grant", "The user name or password is incorrect");
                 context.Rejected();
                 return Task.FromResult<object>(null);
             }
-            
+
             var ticket = new AuthenticationTicket(SetClaimsIdentity(context, user), new AuthenticationProperties());
             context.Validated(ticket);
 
@@ -38,28 +37,6 @@ namespace BooksAPI.Identity
         {
             context.Validated();
             return Task.FromResult<object>(null);
-        }
-
-        private static bool AuthenticateUser(OAuthGrantResourceOwnerCredentialsContext context, out IdentityUser user)
-        {
-            user = null;
-
-            if (string.IsNullOrEmpty(context.UserName) || string.IsNullOrEmpty(context.Password))
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect");
-                context.Rejected();
-                return false;
-            }
-            user = context.OwinContext.Get<BooksContext>().Users.FirstOrDefault(u => u.UserName == context.UserName);
-
-            if (!context.OwinContext.Get<BookUserManager>().CheckPassword(user, context.Password))
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect");
-                context.Rejected();
-                return false;
-            }
-
-            return true;
         }
 
         private static ClaimsIdentity SetClaimsIdentity(OAuthGrantResourceOwnerCredentialsContext context, IdentityUser user)
@@ -73,18 +50,8 @@ namespace BooksAPI.Identity
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, role));
             }
-
-            SetPrincipal(new ClaimsPrincipal(identity));
+            
             return identity;
-        }
-
-        private static void SetPrincipal(IPrincipal principal)
-        {
-            Thread.CurrentPrincipal = principal;
-            if (HttpContext.Current != null)
-            {
-                HttpContext.Current.User = principal;
-            }
         }
     }
 }
