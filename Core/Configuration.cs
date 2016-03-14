@@ -51,6 +51,33 @@
                 Price = 0.99m,
                 ImageUrl = "http://ecx.images-amazon.com/images/I/41JGlyCt5NL._SX326_BO1,204,203,200_.jpg"
             });
+
+            context.Books.AddOrUpdate(new Book
+            {
+                Id = 4,
+                Title = "100 Property Investment Tips",
+                Description = "Rob Dix and Rob Bence are the founders of The Property Hub community, and hosts of The Property Podcast - the UK’s most popular business podcast. They’ve compiled advice from 30 experts and added their own insights to cover a huge range of property-related topics.",
+                Price = 3.58m,
+                ImageUrl = "http://ecx.images-amazon.com/images/I/41hi2zpZ1uL._SX311_BO1,204,203,200_.jpg"
+            });
+
+            context.Books.AddOrUpdate(new Book
+            {
+                Id = 5,
+                Title = "Why Does E=mc2?",
+                Description = "The most accessible, entertaining, and enlightening explanation of the best-known physics equation in the world, as rendered by two of today’s leading scientists.",
+                Price = 5.98m,
+                ImageUrl = "http://ecx.images-amazon.com/images/I/3148zK20NuL._SX327_BO1,204,203,200_.jpg"
+            });
+
+            context.Books.AddOrUpdate(new Book
+            {
+                Id = 6,
+                Title = "A Beautiful Mind",
+                Description = "A Beautiful Mind is Sylvia Nasar's award-winning biography about the mystery of the human mind, the triumph over incredible adversity, and the healing power of love.",
+                Price = 6.99m,
+                ImageUrl = "http://ecx.images-amazon.com/images/I/41pmjXYdOHL._SX309_BO1,204,203,200_.jpg"
+            });
         }
     }
 }
